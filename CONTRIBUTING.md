@@ -13,20 +13,70 @@
 
 ## 目錄長怎樣
 
-每個主題（技能）通常有兩份檔案：
-
-- **skill.md**（給 AI 讀）：用英文寫，定義核心步驟與邏輯。
-- **domain.md**（給人讀）：用繁體中文寫，記錄重點與實務應用。
-
-目錄的結構大致如下，你可以直接複製現有的資料夾，修改內容來建立新的主題：
+每個主題（技能）的完整結構如下：
 
 ```text
-分類名稱
-└── 子類別
-    └── 新主題英文
-        ├── skill.md
-        └── domain.md
+分類名稱（繁體中文）
+└── 子類別（繁體中文）
+    └── skill-name-hyphenated（小寫連字號）
+        ├── SKILL.md              ← 主檔案（全大寫，給 AI 讀，英文）
+        ├── domain.md             ← 面向文件（給人讀，繁體中文）
+        ├── references/           ← 參考文件（法規條文、技術規格等，可選）
+        │   └── README.md
+        ├── scripts/              ← 執行腳本（Python、Bash 等，可選）
+        │   └── README.md
+        └── assets/               ← 圖片、範本等非文字資源（可選）
+            └── README.md
 ```
+
+### 建立新技能的正確步驟
+
+1. **複製樣板**：將 `樣板/` 整個資料夾複製到目標位置
+2. **重新命名資料夾**：改為小寫連字號格式（例如 `fire-safety-review`）
+3. **編輯 SKILL.md**：
+   - 修改 frontmatter 的 `name` 和 `description`
+   - 填入英文技術內容
+4. **編輯 domain.md**：填入繁體中文說明
+5. **刪除不需要的子資料夾**：如果技能不需要 `scripts/`、`assets/` 或 `references/`，直接刪掉即可
+
+### SKILL.md 的 Frontmatter 規則
+
+每個 SKILL.md 開頭必須有 YAML frontmatter（`---` 包起來）：
+
+```yaml
+---
+name: skill-name-hyphenated
+description: "This skill should be used when [具體觸發情境]。"
+license: CC-BY-NC-SA-4.0
+compatibility: claude-code,opencode,agent-skills
+metadata:
+  audience: architects
+  region: taiwan
+---
+```
+
+| 欄位 | 規則 |
+|------|------|
+| `name` | **必填**，1-64 字，小寫英文數字 + 單連字號，不能以 `-` 開頭或結尾，必須與資料夾名稱一致 |
+| `description` | **必填**，1-1024 字，必須包含具體觸發情境，讓 AI 知道何時呼叫此技能 |
+| `license` | 可選，授權聲明 |
+| `compatibility` | 可選，相容性宣告 |
+| `metadata` | 可選，key-value 擴充欄位 |
+
+### 技能分類與特殊要求
+
+| 分類 | 說明 | 特殊要求 |
+|------|------|----------|
+| **A 類通用** | 國際標準，無需台灣適配 | 無特殊要求 |
+| **B 類適配** | 國際規範 → 台灣適配 | 在美國/國際規範區塊前加上 `<!-- TODO: Taiwan adaptation needed -->` |
+| **C 類台灣法規** | 台灣法規，MCP 工具對接 | 必須包含 MCP 工具呼叫範例（`taiwan-building-code_search_building_code`、`pcc-downloader` 等） |
+
+### 雙語檔案對照
+
+| 檔案 | 語言 | 用途 |
+|------|------|------|
+| **SKILL.md** | 英文 | 給 AI 讀，定義核心步驟、技術規格、MCP 工具呼叫 |
+| **domain.md** | 繁體中文 | 給人讀，說明使用情境、學習目標、實務應用 |
 
 我們目前的八大分類架構：
 
@@ -48,7 +98,10 @@
 - **不用一次寫一篇大作**：改一個錯字、補一句說明，都算數。
 - **語氣自然就好**：不要寫得太像公文，用你跟同事討論工程的語氣來寫就可以了。
 - **記得附上來源連結**：如果是引用法規、標準、或是別人寫的資料，請附上連結，這樣其他人查閱時會更方便。
-- **保持雙語對齊**：如果你修改了英文版 (skill.md)，中文版的 domain.md 記得也要跟著更新。
+- **保持雙語對齊**：如果你修改了 SKILL.md，domain.md 記得也要跟著更新。
+- **SKILL.md 保持精簡**：建議控制在 500 行以內，詳細法規條文或參考資料請放進 `references/` 資料夾。
+- **B 類技能不要刪除 TODO 標記**：`<!-- TODO: Taiwan adaptation needed -->` 是提醒待完成的台灣適配，完成後才能移除。
+- **C 類技能必須有 MCP 範例**：包含 `taiwan-building-code_search_building_code` 等工具呼叫範例，方便 AI 對接官方資料庫。
 
 ## 我們怎麼處理你的貢獻
 

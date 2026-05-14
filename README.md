@@ -159,19 +159,40 @@
 
 ## 文件架構說明
 
-### 技能文件雙語結構
+### 技能目錄結構
 
-每個技能包含兩個文件：
+每個技能是一個獨立的資料夾，符合 Agent Skills 開放標準（Claude Code、OpenCode 等）：
 
-1. **skill.md**（AI 用，英文）
-   - 使用英文專業技術術語
-   - 定義核心能力與 AI 操作指南
-   - 支援 AI 精確調動與理解
+```text
+skill-name-hyphenated/
+├── SKILL.md              ← 主檔案（全大寫，AI 用，英文）
+├── domain.md             ← 面向文件（人類用，繁體中文）
+├── references/           ← 參考文件（法規條文等，可選）
+├── scripts/              ← 執行腳本（可選）
+└── assets/               ← 圖片、範本等非文字資源（可選）
+```
 
-2. **domain.md**（人類用，繁體中文）
-   - 使用繁體中文專業術語
-   - 說明技能用途與學習重點
-   - 支援人類學習與知識內化
+### 雙語文件對照
+
+| 檔案 | 語言 | 用途 |
+|------|------|------|
+| **SKILL.md** | 英文 | AI 讀取，含 YAML frontmatter、核心步驟、技術規格、MCP 工具呼叫 |
+| **domain.md** | 繁體中文 | 人類閱讀，說明使用情境、學習目標、實務應用、參考法規 |
+
+### frontmatter 規則
+
+SKILL.md 開頭必須包含 YAML frontmatter：
+
+```yaml
+---
+name: skill-name-hyphenated
+description: "This skill should be used when [具體觸發情境]。"
+---
+```
+
+- `name` 必須與資料夾名稱一致
+- `description` 必須包含具體觸發情境，讓 AI 知道何時呼叫
+- 建立新技能時，請複製 `樣板/` 資料夾作為起點
 
 ---
 
