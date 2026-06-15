@@ -1,6 +1,10 @@
 # 台灣AEC(建築x工程x營造)產業技能開源知識庫
 
 <div align="center">
+  <img src="images/cover.jpg" alt="HJPLUS Taiwan AEC Knowledge Base" width="100%">
+</div>
+
+<div align="center">
   <a href="LICENSE-CODE">
     <img src="https://img.shields.io/badge/Code-Apache%202.0-blue" alt="Code License"></a>
   <a href="LICENSE">
