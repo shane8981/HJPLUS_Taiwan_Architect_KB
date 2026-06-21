@@ -434,7 +434,7 @@
       fetch(BASE + '/contributors?per_page=30').then(function(r) {
         return Promise.all([parseLink(r.headers.get('Link')), r.json()]);
       }).then(function(a) {
-        return { count: a[0] || a[1].length, names: a[1].map(function(u) { return u.login; }) };
+        return { count: a[0] || a[1].length, names: a[1].map(function(u) { return u.name || u.login; }) };
       }),
       fetch(BASE + '/contents/raw').then(function(r) { return r.json(); }).then(function(d) {
         return Array.isArray(d) ? d.filter(function(i) { return i.type === 'dir'; }).length : 10;
