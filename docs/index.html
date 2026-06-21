@@ -19,7 +19,10 @@
   body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","Microsoft JhengHei",sans-serif;color:#1a1a1a;background:#fff;-webkit-font-smoothing:antialiased}
 
   /* ── snap sections ── */
-  section,footer{min-height:100vh;scroll-snap-align:start;display:flex;align-items:center;padding:64px 0}
+  /* ── knowledge graph canvas ── */
+  .kg-wrap{position:relative}
+  .kg-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.7}
+  section,footer{min-height:100vh;scroll-snap-align:start;display:flex;align-items:center;padding:64px 0;position:relative}
   .container{max-width:800px;margin:0 auto;padding:0 24px;width:100%}
   .container-narrow{max-width:720px}
 
@@ -133,6 +136,8 @@
   .event-card h3{margin:0 0 4px}
   .event-card p{margin:0;font-size:0.9375rem}
   .event-card .event-action{flex:0 0 auto}
+  .event-card .btn-primary{background:#1a1a1a;color:#fff}
+  .event-card .btn-primary:hover{background:#333}
   .event-empty{text-align:center;padding:32px;color:#999;font-size:0.9375rem}
   .event-empty a{color:#666}
 
@@ -158,6 +163,20 @@
   .cta .tertiary{display:inline-block;margin-top:24px;font-size:0.875rem;color:rgba(255,255,255,0.35);text-decoration:none;transition:color .2s}
   .cta .tertiary:hover{color:rgba(255,255,255,0.7);text-decoration:underline}
   @media(max-width:480px){.btn-secondary{margin-left:0;margin-top:12px}.cta-stats{gap:24px}}
+
+  /* ── event cards on dark CTA bg ── */
+  .cta .event-card{border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:28px;display:flex;flex-wrap:wrap;gap:20px;align-items:center;margin-bottom:8px}
+  .cta .event-card:only-child{margin-bottom:0}
+  .cta .event-card .event-info{flex:2;min-width:220px}
+  .cta .event-card .event-meta{font-size:0.8125rem;color:rgba(255,255,255,0.45);margin-bottom:4px}
+  .cta .event-card .event-meta strong{color:rgba(255,255,255,0.8)}
+  .cta .event-card h3{margin:0 0 4px;color:#fff;font-size:1.125rem}
+  .cta .event-card p{margin:0;font-size:0.9375rem;color:rgba(255,255,255,0.55)}
+  .cta .event-card .event-action{flex:0 0 auto}
+  .cta .event-card .btn-primary{background:#fff;color:#1a1a1a}
+  .cta .event-card .btn-primary:hover{background:#e0e0e0}
+  .cta .event-empty{color:rgba(255,255,255,0.4)}
+  .cta .event-empty a{color:rgba(255,255,255,0.6)}
 
   /* ── footer ── */
   footer{min-height:auto;display:block;padding:40px 0;font-size:0.8125rem;color:#999;text-align:center;border-top:1px solid #e8e8e8}
@@ -215,7 +234,7 @@
 </section>
 
 <!-- ═══ 痛點 ═══ -->
-<section id="sec-pain">
+<section class="kg-wrap" id="sec-pain">
   <div class="container">
     <h2>你每天在浪費多少時間？</h2>
     <p class="lead">這些場景，在每一個 AEC 團隊每天都在發生。</p>
@@ -237,7 +256,7 @@
 </section>
 
 <!-- ═══ 雙贏迴圈 ═══ -->
-<section class="loop" id="sec-loop">
+<section class="loop kg-wrap" id="sec-loop">
   <div class="container">
     <h2>人類 × Agent 雙贏迴圈</h2>
     <p class="lead" style="color:rgba(255,255,255,0.7)">不是取代，是分工。人做判斷，AI 做陪跑。</p>
@@ -266,7 +285,7 @@
 </section>
 
 <!-- ═══ 對你的好處 ═══ -->
-<section id="sec-benefit">
+<section class="kg-wrap" id="sec-benefit">
   <div class="container">
     <h2>這對你的好處</h2>
     <div class="who-grid">
@@ -291,7 +310,7 @@
 </section>
 
 <!-- ═══ 證據 ═══ -->
-<section class="evidence" id="sec-evidence">
+<section class="evidence kg-wrap" id="sec-evidence">
   <div class="container">
     <h2>這不是空殼</h2>
     <p class="lead">有人在用，在長大，在發生。</p>
@@ -352,19 +371,8 @@
   </div>
 </section>
 
-<!-- ═══ 即將舉辦 ═══ -->
-<section id="sec-event">
-  <div class="container">
-    <h2>即將舉辦</h2>
-    <p class="lead">近期小聚、工作坊、共寫活動。</p>
-    <div id="eventList">
-      <div class="event-empty">讀取中…</div>
-    </div>
-  </div>
-</section>
-
 <!-- ═══ 架構 ═══ -->
-<section id="sec-arch">
+<section class="kg-wrap" id="sec-arch">
   <div class="container">
     <h2>架構 — 一句話</h2>
     <p class="lead">每個知識主題產出兩份文件：一份給人讀，一份給 AI 讀。</p>
@@ -380,18 +388,22 @@
   </div>
 </section>
 
-<!-- ═══ CTA ═══ -->
+<!-- ═══ CTA（含近期活動） ═══ -->
 <section class="cta" id="sec-cta">
   <div class="hero-bg"></div>
   <div class="hero-overlay"></div>
   <div class="container">
-    <h2>你已經看到這裡了。</h2>
+    <div id="eventList">
+      <div class="event-empty">讀取中…</div>
+    </div>
+
+    <h2 style="margin-top:48px">你已經看到這裡了。</h2>
     <p class="cta-sub">代表你也覺得這件事有意義。不用一次交一篇大作 — 改一個錯字、補一段說明、更新一個法規條文，都是貢獻。</p>
 
     <div class="cta-stats">
       <div class="cta-stat"><div class="num" data-to="82">82</div><div class="label">commits</div></div>
       <div class="cta-stat"><div class="num" data-to="8">8</div><div class="label">contributors</div></div>
-      <div class="cta-stat"><div class="num" data-to="39">39</div><span style="font-size:1.5rem;font-weight:800;color:#fff">+</span><div class="label">skills</div></div>
+      <div class="cta-stat"><div class="num" data-to="39">39<span style="font-size:1.5rem;font-weight:800;color:#fff">+</span></div><div class="label">skills</div></div>
     </div>
 
     <div>
@@ -478,9 +490,8 @@ const sections = [
   { id: 'sec-loop',    label: '雙贏迴圈' },
   { id: 'sec-benefit', label: '好處' },
   { id: 'sec-evidence',label: '證據' },
-  { id: 'sec-event',  label: '活動' },
   { id: 'sec-arch',    label: '架構' },
-  { id: 'sec-cta',     label: '加入' },
+  { id: 'sec-cta',     label: '行動' },
 ];
 
 const dotNav = document.getElementById('dotNav');
@@ -497,7 +508,7 @@ const dots = dotNav.querySelectorAll('a');
 const allSnap = document.querySelectorAll('section[id]');
 
 const darkSections = ['sec-hero','sec-loop','sec-evidence','sec-cta'];
-const sectionOrder = ['sec-hero','sec-pain','sec-loop','sec-benefit','sec-evidence','sec-event','sec-arch','sec-cta'];
+const sectionOrder = ['sec-hero','sec-pain','sec-loop','sec-benefit','sec-evidence','sec-arch','sec-cta'];
 
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
@@ -664,6 +675,254 @@ setTimeout(() => {
     html += '<div style="text-align:right;margin-top:12px"><a href="https://github.com/h30190/HJPLUS_Taiwan_Architect_KB/issues/new/choose" style="color:#999;font-size:0.8125rem;text-decoration:none">＋ 提議一場活動</a></div>';
     list.innerHTML = html;
   }
+})();
+
+// ── knowledge graph background ──
+(function() {
+  var tree = [
+    { name: '建築設計與規劃', children: [
+      { name: '設計理論', skills: ['建築計畫', '都市設計', '防災規劃'] },
+      { name: '空間規劃', skills: ['分區規劃', '動線設計'] },
+      { name: '建築外觀', skills: ['立面設計', '帷幕牆'] }
+    ]},
+    { name: '專業複委託', children: [
+      { name: '結構', skills: ['結構系統', '基礎設計'] },
+      { name: '機電', skills: ['機電協調', '管線設計'] },
+      { name: '環工', skills: ['水土保持', '地質調查'] }
+    ]},
+    { name: '建築性能', children: [
+      { name: '物理環境', skills: ['採光分析', '風環境', '聲學模擬'] },
+      { name: '能源', skills: ['能源分析', 'BAPV', '智慧玻璃'] },
+      { name: '消防性能', skills: ['排煙窗檢討', '避難驗證'] },
+      { name: '數位', skills: ['數位孿生', 'HEAM'] }
+    ]},
+    { name: '建築法規', children: [
+      { name: '技術規則', skills: ['防火區劃', '樓梯寬度', '無障礙'] },
+      { name: '消防法規', skills: ['消防設備', '撒水系統'] },
+      { name: '解釋函令', skills: ['函釋檢索', '實務見解'] }
+    ]},
+    { name: '施工與材料', children: [
+      { name: '施工法', skills: ['鋼筋混凝土', '鋼構', '預鑄工法'] },
+      { name: '材料', skills: ['材料規範', '綠色材料', '品質檢驗'] },
+      { name: 'BIM施工', skills: ['BIM 360', '施工模擬'] }
+    ]},
+    { name: '建築執照', children: [
+      { name: '申請類', skills: ['建造執照', '使照申請', '雜項執照', '拆除執照'] },
+      { name: '變更類', skills: ['變更使用', '容積移轉', '山坡地審查'] },
+      { name: '審查類', skills: ['無障礙審查', '防火避難', '都市設計審議'] }
+    ]},
+    { name: '公共工程', children: [
+      { name: '招標', skills: ['公開招標', '公開閱覽'] },
+      { name: '品管', skills: ['公共工程品管', '查核'] }
+    ]},
+    { name: '專案管理', children: [
+      { name: '管理職能', skills: ['進度管理', '成本控制', '合約管理'] },
+      { name: 'BIM專案', skills: ['BIM執行計畫', '模型管理'] }
+    ]},
+    { name: '經營管理', children: [
+      { name: '營運', skills: ['事務所經營', '財務管理'] },
+      { name: '人力', skills: ['人事制度', '教育訓練'] }
+    ]},
+    { name: '室內裝修', children: [
+      { name: '設計', skills: ['室內設計', '燈光設計'] },
+      { name: '法規', skills: ['裝修法規', '施工管理'] }
+    ]},
+    { name: '設計軟體', children: [
+      { name: 'BIM', skills: ['Revit', 'Archicad', 'Tekla'] },
+      { name: '2D/3D', skills: ['AutoCAD', 'SketchUp', 'Rhino'] },
+      { name: '分析', skills: ['GIS', 'IES VE'] }
+    ]}
+  ];
+  var containers = document.querySelectorAll('.kg-wrap');
+  if (!containers.length) return;
+
+  containers.forEach(function(wrap) {
+    var canvas = document.createElement('canvas');
+    canvas.className = 'kg-canvas';
+    wrap.insertBefore(canvas, wrap.firstChild);
+
+    // detect light/dark background
+    var bg = getComputedStyle(wrap).backgroundColor;
+    var isDark = true;
+    if (bg && bg !== 'transparent') {
+      var m = bg.match(/\d+/g);
+      if (m && m.length >= 3) {
+        var alpha = m.length >= 4 ? +m[3] : 1;
+        if (alpha === 0) { isDark = false; }
+        else {
+          var lum = 0.299 * +m[0] + 0.587 * +m[1] + 0.114 * +m[2];
+          isDark = lum < 128;
+        }
+      }
+    } else {
+      // transparent = no explicit bg → body bg is white
+      isDark = false;
+    }
+    var fg = isDark ? '255,255,255' : '160,160,160';
+    var fgDim = isDark ? '255,255,255' : '190,190,190';
+    var aMul = isDark ? 1 : 1.2;
+    canvas.style.opacity = isDark ? '0.65' : '0.6';
+
+    var ctx = canvas.getContext('2d');
+    var W, H;
+    var allNodes = [];
+    var mx = -9999, my = -9999;
+    function dist(a,b) { return Math.sqrt((a.x-b.x)*(a.x-b.x)+(a.y-b.y)*(a.y-b.y)); }
+
+    wrap.addEventListener('mousemove', function(e) {
+      var r = canvas.getBoundingClientRect();
+      mx = e.clientX - r.left;
+      my = e.clientY - r.top;
+    });
+    wrap.addEventListener('mouseleave', function() {
+      mx = -9999; my = -9999;
+    });
+
+    function resize() {
+      var rect = wrap.getBoundingClientRect();
+      W = canvas.width = rect.width;
+      H = canvas.height = rect.height;
+      build();
+    }
+
+    function build() {
+      allNodes = [];
+      var pad = 60;
+      function randPos() { return { x: pad + Math.random() * (W - pad * 2), y: pad + Math.random() * (H - pad * 2) }; }
+
+      tree.forEach(function(cat) {
+        var p, ok = false, tries = 0;
+        while (!ok && tries < 300) { p = randPos(); ok = true; tries++; for (var i=0;i<allNodes.length;i++) if (dist(p,allNodes[i])<90) { ok=false; break; } }
+        var cn = { name: cat.name, x: p.x, y: p.y, ox: p.x, oy: p.y, level: 0, r: 8, children: [] };
+        allNodes.push(cn);
+
+        cat.children.forEach(function(sub) {
+          var sp, sok = false, stries = 0;
+          while (!sok && stries < 150) {
+            sp = { x: p.x + (Math.random()-0.5)*160, y: p.y + (Math.random()-0.5)*160 };
+            sok = true; stries++;
+            if (sp.x<pad||sp.x>W-pad||sp.y<pad||sp.y>H-pad) { sok=false; continue; }
+            for (var i=0;i<allNodes.length;i++) if (dist(sp,allNodes[i])<40) { sok=false; break; }
+          }
+          var sn = { name: sub.name, x: sp.x, y: sp.y, ox: sp.x, oy: sp.y, level: 1, r: 5, parent: cn };
+          allNodes.push(sn);
+          cn.children.push(sn);
+
+          sub.skills.forEach(function(skill) {
+            var skp, skok = false, sktries = 0;
+            while (!skok && sktries < 80) {
+              skp = { x: sp.x + (Math.random()-0.5)*80, y: sp.y + (Math.random()-0.5)*80 };
+              skok = true; sktries++;
+              if (skp.x<pad||skp.x>W-pad||skp.y<pad||skp.y>H-pad) { skok=false; continue; }
+              for (var i=0;i<allNodes.length;i++) if (dist(skp,allNodes[i])<25) { skok=false; break; }
+            }
+            var skn = { name: skill, x: skp.x, y: skp.y, ox: skp.x, oy: skp.y, level: 2, r: 3, parent: sn };
+            allNodes.push(skn);
+            sn.children = sn.children || [];
+            sn.children.push(skn);
+          });
+        });
+      });
+    }
+
+    var time = 0;
+
+    function draw() {
+      time += 0.02;
+
+      // global slow rotation
+      var cx = W / 2, cy = H / 2;
+      var angle = time * 0.015;
+      var cosA = Math.cos(angle), sinA = Math.sin(angle);
+      function globalPos(n) {
+        var dx = n.x - cx, dy = n.y - cy;
+        return { x: cx + dx * cosA - dy * sinA, y: cy + dx * sinA + dy * cosA, r: n.r, level: n.level, name: n.name, parent: n.parent };
+      }
+
+      ctx.clearRect(0, 0, W, H);
+
+      // drift + mouse (local physics, no rotation)
+      allNodes.forEach(function(n) {
+        var speed = 1 - n.level * 0.3;
+        var amp = 11 - n.level * 2;
+        n._dx = n.ox - n.x + Math.sin(time * speed + n.oy * 0.003) * amp;
+        n._dy = n.oy - n.y + Math.cos(time * speed * 1.2 + n.ox * 0.003) * amp;
+
+        var mdx = mx - n.x, mdy = my - n.y;
+        var mdist = Math.sqrt(mdx*mdx + mdy*mdy);
+        if (mdist < 100 && mdist > 1) {
+          n._dx += mdx/mdist * (100-mdist)/100 * 2.25;
+          n._dy += mdy/mdist * (100-mdist)/100 * 2.25;
+        }
+        n.x += n._dx * 0.11;
+        n.y += n._dy * 0.11;
+      });
+
+      // lines
+      ctx.lineWidth = 0.5;
+      allNodes.forEach(function(n) {
+        var gp = globalPos(n);
+        if (n.parent) {
+          var pp = globalPos(n.parent);
+          ctx.strokeStyle = 'rgba(' + fgDim + ',' + (0.07 * aMul) + ')';
+          ctx.beginPath(); ctx.moveTo(pp.x, pp.y); ctx.lineTo(gp.x, gp.y); ctx.stroke();
+        }
+      });
+      // level0 ⟷ level0
+      for (var i=0; i<allNodes.length; i++) {
+        if (allNodes[i].level !== 0) continue;
+        for (var j=i+1; j<allNodes.length; j++) {
+          if (allNodes[j].level !== 0) continue;
+          var a = globalPos(allNodes[i]), b = globalPos(allNodes[j]);
+          var d = Math.sqrt((a.x-b.x)*(a.x-b.x)+(a.y-b.y)*(a.y-b.y));
+          if (d < 280) {
+            ctx.strokeStyle = 'rgba(' + fgDim + ',' + (0.03 * aMul) + ')';
+            ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+          }
+        }
+      }
+
+      // draw
+      allNodes.forEach(function(n) {
+        var gp = globalPos(n);
+        var pulse = 1 + Math.sin(time * 4 + n.ox * 0.1) * 0.15;
+        var br = n.r * pulse;
+        var glowR = br * (n.level < 2 ? 5 : 4);
+        var alpha = (0.12 + n.level * 0.07) * aMul;
+
+        // mouse glow (use raw n for physics position vs mouse)
+        var mdist = Math.sqrt((mx-n.x)*(mx-n.x)+(my-n.y)*(my-n.y));
+        if (mdist < 100) alpha += (100-mdist)/100 * 0.5 * aMul;
+        if (alpha > 1) alpha = 1;
+
+        // glow
+        var grad = ctx.createRadialGradient(gp.x, gp.y, 0, gp.x, gp.y, glowR);
+        grad.addColorStop(0, 'rgba(' + fg + ',' + alpha + ')');
+        grad.addColorStop(1, 'rgba(' + fg + ',0)');
+        ctx.fillStyle = grad;
+        ctx.beginPath(); ctx.arc(gp.x, gp.y, glowR, 0, Math.PI*2); ctx.fill();
+
+        // dot
+        ctx.fillStyle = 'rgba(' + fg + ',' + ((0.12 + n.level * 0.08) * aMul) + ')';
+        ctx.beginPath(); ctx.arc(gp.x, gp.y, br, 0, Math.PI*2); ctx.fill();
+
+        // text
+        if (n.level === 0) {
+          ctx.font = '11px -apple-system,BlinkMacSystemFont,"Noto Sans TC",sans-serif';
+          ctx.fillStyle = 'rgba(' + fgDim + ',' + (0.2 * aMul) + ')';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'top';
+          ctx.fillText(n.name, gp.x, gp.y + br + 4);
+        }
+      });
+
+      requestAnimationFrame(draw);
+    }
+
+    resize();
+    draw();
+    window.addEventListener('resize', resize);
+  });
 })();
 </script>
 
