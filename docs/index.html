@@ -125,6 +125,17 @@
   .tag{font-size:0.8125rem;padding:4px 12px;background:#f0f0f0;border-radius:4px;color:#555}
   .evidence .tag{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.6)}
 
+  /* ── upcoming event ── */
+  .event-card{border:1px solid #e0e0e0;border-radius:8px;padding:28px;margin-top:32px;display:flex;flex-wrap:wrap;gap:20px;align-items:center}
+  .event-card .event-info{flex:2;min-width:220px}
+  .event-card .event-meta{font-size:0.8125rem;color:#888;margin-bottom:4px}
+  .event-card .event-meta strong{color:#333}
+  .event-card h3{margin:0 0 4px}
+  .event-card p{margin:0;font-size:0.9375rem}
+  .event-card .event-action{flex:0 0 auto}
+  .event-empty{text-align:center;padding:32px;color:#999;font-size:0.9375rem}
+  .event-empty a{color:#666}
+
   /* ── architecture block ── */
   .code-block{background:#f8f8f8;border-radius:8px;padding:24px;font-family:"SF Mono","Cascadia Code","Noto Sans Mono",monospace;font-size:0.875rem;line-height:2;margin-top:16px}
 
@@ -341,6 +352,17 @@
   </div>
 </section>
 
+<!-- ═══ 即將舉辦 ═══ -->
+<section id="sec-event">
+  <div class="container">
+    <h2>即將舉辦</h2>
+    <p class="lead">近期小聚、工作坊、共寫活動。</p>
+    <div id="eventList">
+      <div class="event-empty">讀取中…</div>
+    </div>
+  </div>
+</section>
+
 <!-- ═══ 架構 ═══ -->
 <section id="sec-arch">
   <div class="container">
@@ -456,6 +478,7 @@ const sections = [
   { id: 'sec-loop',    label: '雙贏迴圈' },
   { id: 'sec-benefit', label: '好處' },
   { id: 'sec-evidence',label: '證據' },
+  { id: 'sec-event',  label: '活動' },
   { id: 'sec-arch',    label: '架構' },
   { id: 'sec-cta',     label: '加入' },
 ];
@@ -474,7 +497,7 @@ const dots = dotNav.querySelectorAll('a');
 const allSnap = document.querySelectorAll('section[id]');
 
 const darkSections = ['sec-hero','sec-loop','sec-evidence','sec-cta'];
-const sectionOrder = ['sec-hero','sec-pain','sec-loop','sec-benefit','sec-evidence','sec-arch','sec-cta'];
+const sectionOrder = ['sec-hero','sec-pain','sec-loop','sec-benefit','sec-evidence','sec-event','sec-arch','sec-cta'];
 
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
@@ -575,6 +598,61 @@ setTimeout(() => {
     });
   }, { threshold: 0.5 });
   obs.observe(ctaSec);
+})();
+
+// ── upcoming events ──
+(function() {
+  var list = document.getElementById('eventList');
+  if (!list) return;
+  var cached = sessionStorage.getItem('gh-events');
+  if (cached) { render(JSON.parse(cached)); return; }
+
+  fetch('https://api.github.com/repos/h30190/HJPLUS_Taiwan_Architect_KB/issues?labels=event&state=open&per_page=5')
+    .then(function(r) { return r.json(); })
+    .then(function(issues) {
+      if (!Array.isArray(issues) || issues.length === 0) {
+        list.innerHTML = '<div class="event-empty">目前沒有排定的活動。想辦一場？<br>到 <a href="https://github.com/h30190/HJPLUS_Taiwan_Architect_KB/issues/new/choose">GitHub Issues</a> 開一張活動公告</div>';
+        return;
+      }
+      sessionStorage.setItem('gh-events', JSON.stringify(issues));
+      render(issues);
+    })
+    .catch(function() {
+      list.innerHTML = '<div class="event-empty">目前沒有排定的活動。</div>';
+    });
+
+  function render(issues) {
+    var html = '';
+    issues.forEach(function(issue) {
+      // extract title without [活動] prefix
+      var t = issue.title.replace(/^\[活動\]\s*/, '');
+      // parse date from body (first line after 📅)
+      var body = issue.body || '';
+      var dateMatch = body.match(/📅[^\n]*\n?\s*([^\n]+)/);
+      var dateStr = dateMatch ? dateMatch[1].trim() : '';
+      var formatMatch = body.match(/📍[^\n]*\n?\s*([^\n]+)/);
+      var formatStr = formatMatch ? formatMatch[1].trim() : '';
+      var linkMatch = body.match(/🔗[^\n]*\n?\s*([^\n]+)/);
+      var link = linkMatch ? linkMatch[1].trim() : issue.html_url;
+      var descMatch = body.match(/📝[^\n]*\n?\s*([^\n]+)/);
+      var desc = descMatch ? descMatch[1].trim() : '';
+
+      html += '<div class="event-card">' +
+        '<div class="event-info">' +
+        '<div class="event-meta">' +
+        (dateStr ? '<strong>' + dateStr + '</strong>' : '') +
+        (formatStr ? ' · ' + formatStr : '') +
+        '</div>' +
+        '<h3>' + t + '</h3>' +
+        (desc ? '<p>' + desc + '</p>' : '') +
+        '</div>' +
+        (link ? '<div class="event-action"><a class="btn btn-primary" href="' + link + '" target="_blank" style="font-size:0.875rem;padding:10px 24px">報名</a></div>' : '') +
+        '</div>';
+    });
+    // add "提議活動" link at bottom
+    html += '<div style="text-align:right;margin-top:12px"><a href="https://github.com/h30190/HJPLUS_Taiwan_Architect_KB/issues/new/choose" style="color:#999;font-size:0.8125rem;text-decoration:none">＋ 提議一場活動</a></div>';
+    list.innerHTML = html;
+  }
 })();
 </script>
 
