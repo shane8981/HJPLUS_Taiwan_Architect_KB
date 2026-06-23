@@ -7,7 +7,7 @@ body:
     id: date
     attributes:
       label: 📅 日期時間
-      placeholder: e.g. 2026-06-24 (二) 20:00-21:00
+      placeholder: e.g. 2026-06-24 (三) 20:00-21:00
     validations:
       required: true
 
