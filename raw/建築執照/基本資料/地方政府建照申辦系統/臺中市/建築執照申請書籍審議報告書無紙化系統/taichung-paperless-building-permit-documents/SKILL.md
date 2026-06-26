@@ -1,7 +1,11 @@
 ---
 name: taichung-paperless-building-permit-documents
 description: "This skill should be used when working with Taichung City's web-based paperless building permit booklet and review report system, including login identity, personnel authorization, application case management, online case import, and legacy standalone case import."
-user-invocable: true
+license: CC-BY-SA-4.0
+compatibility: claude-code,opencode,agent-skills
+metadata:
+  audience: architects
+  region: taiwan
 ---
 
 # Taichung Paperless Building Permit Documents
